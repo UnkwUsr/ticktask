@@ -10,7 +10,7 @@ if [ -z "$1" ]; then
     exit 1
 fi
 
-task_title=$(printf "%q" $@)
+task_title=$(echo "$@" | sed 's/\\/\\\\/g; s/"/\\"/g')
 
 if [ ! -f $CONFIG_FILE ]; then
     echo "Please create config file: $CONFIG_FILE"
