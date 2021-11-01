@@ -1,0 +1,86 @@
+#!/bin/bash
+
+ACCESS_TOKEN_FILE="$HOME/.cache/ticktask/token"
+CONFIG_FILE="$HOME/.config/ticktask/config.sh"
+FOLDER_ERROR_TASKS="$HOME/.cache/ticktask/error_tasks/"
+
+if [ -z "$1" ]; then
+    echo "Usage: $0 your task title"
+
+    exit 1
+fi
+
+task_title=$(printf "%q" $@)
+
+if [ ! -f $CONFIG_FILE ]; then
+    echo "Please create config file: $CONFIG_FILE"
+
+    exit 1
+fi
+
+source $CONFIG_FILE
+
+if [ -f $ACCESS_TOKEN_FILE ]; then
+    access_token=$(<$ACCESS_TOKEN_FILE)
+else
+    # authorization
+    echo "No access_token cached. Receiving new one"
+
+    REDIRECT_URL="http://127.0.0.1"
+    URL_LEN=$(echo "$REDIRECT_URL" | wc -c)
+
+    # docs says "comma separated", but comma not work. So we use space there
+    SCOPE="tasks:write%20tasks:read"
+
+    auth_url="https://ticktick.com/oauth/authorize?scope=$SCOPE&client_id=$CLIENT_ID&state=state&redirect_uri=$REDIRECT_URL&response_type=code"
+
+    echo "Opening browser"
+    user_auth_url=$(curl -ILsS -w "%{url_effective}\n" "$auth_url" | tail -n1)
+    xdg-open $user_auth_url 2> /dev/null
+
+    read -ep "Paste url you've been redirected: " url_with_code
+    code=$(echo -n $url_with_code | tail -c +$(($URL_LEN + 7)) | head -c 6)
+    echo "Code: $code"
+
+    payload_get_acces_token="grant_type=authorization_code&code=$code&redirect_uri=$REDIRECT_URL"
+    resp_get_access_token=$(curl -s --header "Content-Type: application/x-www-form-urlencoded" \
+        -u $CLIENT_ID:$CLIENT_SECRET \
+        --request POST \
+        --data "$payload_get_acces_token" \
+        https://ticktick.com/oauth/token)
+
+    # TODO: store parameter expires_in
+    if [[ $resp_get_access_token =~ (access_token\":\")([^\"]*) ]]; then
+        access_token=${BASH_REMATCH[2]}
+        echo "access_token received. You can find it in $ACCESS_TOKEN_FILE"
+
+        mkdir -p $(dirname $ACCESS_TOKEN_FILE)
+        echo -n "$access_token" > $ACCESS_TOKEN_FILE
+    else
+        echo "Bad response for getting access_token: $resp_get_access_token"
+
+        exit 2
+    fi
+fi
+
+json_task='{ "title": "'$task_title'" }'
+
+resp_create_task=$(curl -s \
+    --fail-with-body \
+    --header "Content-Type: application/json" \
+    --header "Authorization: Bearer $access_token" \
+    --request POST \
+    --data "$json_task" \
+    https://api.ticktick.com/open/v1/task)
+if (( $? != 0 )); then
+    echo "Error on creating task. Server response:"
+    echo "$resp_create_task"
+
+    mkdir -p $FOLDER_ERROR_TASKS
+    error_task_file=$(date +%s)
+    echo $task_title > $FOLDER_ERROR_TASKS/$error_task_file
+    echo "Task saved to $FOLDER_ERROR_TASKS"
+
+    exit 2
+fi
+
