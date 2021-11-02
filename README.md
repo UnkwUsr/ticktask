@@ -1,5 +1,5 @@
 # Ticktask
-Ticktask is a simple cli for [tick-tick](ticktick.com) to create tasks.
+Ticktask is a simple cli for [tick-tick](https://ticktick.com) to create tasks.
 
 ## Features
 * Uses [official](https://developer.ticktick.com/docs#/openapi) open api (it
