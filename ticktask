@@ -91,7 +91,7 @@ if (( $? != 0 )); then
 
     mkdir -p $FOLDER_ERROR_TASKS
     error_task_file=$(date +%s)
-    echo $task_title > $FOLDER_ERROR_TASKS/$error_task_file
+    echo "$@" > $FOLDER_ERROR_TASKS/$error_task_file
     echo "Task saved to $FOLDER_ERROR_TASKS"
 
     exit 2
