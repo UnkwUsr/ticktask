@@ -63,8 +63,7 @@ else
     fi
 fi
 
-# parse date, list name and tags from task title
-# date
+# parse date
 if [[ $task_title =~ (^| )\*(today|tomorrow)( |$).* ]]; then
     title_date=${BASH_REMATCH[2]}
     # date must be 1 day ago than real
@@ -74,8 +73,20 @@ if [[ $task_title =~ (^| )\*(today|tomorrow)( |$).* ]]; then
     # remove date entries from title text
     task_title="$(echo "$task_title" | sed -E 's/(^| )\*today( |$)/ /g; s/(^| )\*tomorrow( |$)/ /g; s/(^ | $)//g')"
 fi
+# parse tags
+if [[ $task_title =~ (^| )#([a-zA-Z0-9_]+)( |$) ]]; then
+    tags=$(echo "$task_title" | grep -Eo "(^| )#\w+" | tr -d "\n")
 
-json_task='{ "title": "'$task_title'"'$field_duedate' }'
+    # HACK. desc is not actual description (for real description use field
+    # 'content'). This field is not even displayed (at least in web version),
+    # but ticktick parses tags from this field
+    field_desc=', "desc": "'$tags'"'
+
+    # remove tags from title text
+    task_title="$(echo "$task_title" | sed -E 's/(^| )(#\w+( |$))+/ /g; s/(^ | $)//g')"
+fi
+
+json_task='{ "title": "'$task_title'"'$field_duedate$field_desc' }'
 
 # finally send request to create task
 resp_create_task=$(curl -s \

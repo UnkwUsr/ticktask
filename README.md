@@ -5,6 +5,7 @@ Ticktask is a simple cli for [tick-tick](https://ticktick.com) to create tasks.
 * Uses [official](https://developer.ticktick.com/docs#/openapi) open api (it
   sill under development, but creating tasks is already work)
 * Parsing date (*today and *tomorrow)
+* Parsing tags (starts with #)
 
 ## Installation
 *(not yet provided. For now you can just copy ./ticktask file and run like bash
@@ -37,7 +38,7 @@ ticktask my new task created with ticktask
 ```
 
 You can use date rules `*today` and `*tomorrow` which will be applied to task
-and removed from title text.
+and removed from title text. The same for tags which starts with `#`.
 
 Note: if for some reasons ticktask can't send request to ticktick, your task
 text would be saved in `~/.cache/ticktask/error_tasks/` folder, so you would
