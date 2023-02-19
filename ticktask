@@ -12,6 +12,11 @@ fi
 
 task_title=$(echo "$@" | sed 's/\\/\\\\/g; s/"/\\"/g')
 
+user_input=$(gxmessage --entry "Enter your task body. Press cancel to dismiss.")
+if [ -n "$user_input" ]; then # check if body exists then append json format. requires gxmessage util install - sudo apt install gxmessage
+     task_body=', "content": "'$user_input'"'
+fi
+
 if [ ! -f $CONFIG_FILE ]; then
     echo "Please create config file: $CONFIG_FILE"
 
@@ -86,7 +91,7 @@ if [[ $task_title =~ (^| )#([a-zA-Z0-9_]+)( |$) ]]; then
     task_title="$(echo "$task_title" | sed -E 's/(^| )(#\w+( |$))+/ /g; s/(^ | $)//g')"
 fi
 
-json_task='{ "title": "'$task_title'"'$field_duedate$field_desc' }'
+json_task='{ "title": "'$task_title'"'$task_body''$field_duedate$field_desc' }'
 
 # finally send request to create task
 resp_create_task=$(curl -s \
