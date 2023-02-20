@@ -52,3 +52,18 @@ Note: if for some reasons ticktask can't send request to ticktick, your task
 text will be saved in `~/.local/share/ticktask/error_tasks/` folder, so you
 will never lose anything. P.S. in such situation ticktask exit with code 2, so
 you can use it in your scripts (for example send notify with `notify-send`)
+
+### Use with hotkey
+
+[Personally](https://github.com/UnkwUsr/dotfiles/blob/master/config/i3/config#L241-L243),
+I use ticktask with [dmenu](https://tools.suckless.org/dmenu/). Command I use
+in hotkey:
+
+```bash
+echo -n | dmenu -p "ticktask:" | xargs -0 ticktask \
+       && notify-send ticktask -t 1000 sent \
+       || notify-send ticktask -u critical -t 2000 "not sent"
+```
+
+It opens dmenu prompt, then forwards result to tictask, and then sends notify
+with status "sent" or "not sent".
