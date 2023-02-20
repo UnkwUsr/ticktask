@@ -10,6 +10,7 @@ if [ -z "$1" ]; then
     exit 1
 fi
 
+# escape \ and " symbols
 task_title=$(echo "$@" | sed 's/\\/\\\\/g; s/"/\\"/g')
 
 if [ ! -f $CONFIG_FILE ]; then
@@ -62,6 +63,14 @@ else
     fi
 fi
 
+# getting task description
+if [ $(declare -F cmd_get_description) ]; then
+    # escape \ and " and newline symbols
+    desc=$(cmd_get_description | sed 's/\\/\\\\/g; s/"/\\"/g' \
+        | awk '{printf "%s\\n", $0}')
+    field_content=', "content": "'$desc'"'
+fi
+
 # parse date
 if [[ $task_title =~ (^| )\*(today|tomorrow)( |$).* ]]; then
     title_date=${BASH_REMATCH[2]}
@@ -85,7 +94,7 @@ if [[ $task_title =~ (^| )#([a-zA-Z0-9_]+)( |$) ]]; then
     task_title="$(echo "$task_title" | sed -E 's/(^| )(#\w+( |$))+/ /g; s/(^ | $)//g')"
 fi
 
-json_task='{ "title": "'$task_title'"'$field_duedate$field_desc' }'
+json_task='{ "title": "'$task_title'"'$field_content$field_duedate$field_desc' }'
 
 # finally send request to create task
 resp_create_task=$(curl -s \
