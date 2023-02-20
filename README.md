@@ -11,8 +11,11 @@ Ticktask is a simple cli for [ticktick](https://ticktick.com) to create tasks.
 
 ## Installation
 
-*(not yet provided. For now you can just copy ./ticktask file and run like bash
-script).*
+### Manual
+
+Just save the
+[./ticktask](https://raw.githubusercontent.com/UnkwUsr/ticktask/master/ticktask)
+file somewhere on your computer (for example, in `/usr/local/bin/`)
 
 ## Setup
 
