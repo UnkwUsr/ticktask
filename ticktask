@@ -11,8 +11,8 @@ if [ -z "$1" ]; then
 fi
 
 task_title=$(echo "$@" | sed 's/\\/\\\\/g; s/"/\\"/g')
-
-user_input=$(gxmessage --entry "Enter your task body. Press cancel to dismiss.")
+echo "input task description if any: "
+read user_input
 if [ -n "$user_input" ]; then # check if body exists then append json format. requires gxmessage util install - sudo apt install gxmessage
      task_body=', "content": "'$user_input'"'
 fi
