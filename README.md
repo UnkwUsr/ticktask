@@ -8,6 +8,7 @@ Ticktask is a simple cli for [ticktick](https://ticktick.com) to create tasks.
   is still under development, but creating tasks is already work)
 * Support date (\*today and \*tomorrow)
 * Support tags (starts with #)
+* Support task body (see [config](#Config) section)
 
 ## Installation
 
@@ -32,7 +33,7 @@ CLIENT_ID="your_client_id"
 CLIENT_SECRET="your_client_secret"
 ```
 
-Then run `ticktask` and follow his instructions.
+Then run `ticktask` and follow its instructions.
 
 Congratulations! Your token saved in `~/.local/share/ticktask/token`. Now you
 can jump to usage section.
@@ -55,7 +56,7 @@ you can use it in your scripts (for example send notify with `notify-send`)
 
 ### Use with hotkey
 
-[Personally](https://github.com/UnkwUsr/dotfiles/blob/master/config/i3/config#L241-L243),
+[Personally](https://github.com/UnkwUsr/dotfiles/blob/d296e8629f9945efe67e699c0475d3202c53a8d5/config/i3/config#L241-L243),
 I use ticktask with [dmenu](https://tools.suckless.org/dmenu/). Command I use
 in hotkey:
 
@@ -67,3 +68,17 @@ echo -n | dmenu -p "ticktask:" | xargs -0 ticktask \
 
 It opens dmenu prompt, then forwards result to tictask, and then sends notify
 with status "sent" or "not sent".
+
+## Config
+
+Config file located at `~/.config/ticktask/config.sh`. This is simply bash
+script, so it's very hackable and extensible.
+
+For examples see [./config.example.sh](./config.example.sh)
+
+### Task body
+
+To be able to enter a task description, you can define function
+`cmd_get_description()` which should output the description as a result. For
+example, you can run any gui program with prompt, which will then print it to
+stdout.
