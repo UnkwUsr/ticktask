@@ -82,3 +82,9 @@ To be able to enter a task description, you can define function
 `cmd_get_description()` which should output the description as a result. For
 example, you can run any gui program with prompt, which will then print it to
 stdout.
+
+## Related projects
+
+* [ticked](https://github.com/UnkwUsr/ticked) - allows you to edit your
+  [ticktick.com](https://ticktick.com) tasks in your favorite editor (like
+  vim/neovim).
