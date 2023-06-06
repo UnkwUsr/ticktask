@@ -73,12 +73,22 @@ fi
 
 # parse date
 if [[ $task_title =~ (^| )\*(today|tomorrow)( |$).* ]]; then
-    title_date=${BASH_REMATCH[2]}
-    # date must be 1 day ago than real
-    title_date=$(date --date="$title_date 1 day ago" -Iseconds)
-    field_duedate=', "dueDate": "'$title_date'"'
+    date=${BASH_REMATCH[2]}
 
-    # remove date entries from title text
+    # date must be 1 day ago than real
+    # ticktick web uses fixed time 21:00 and fixed to 21:00 in UTC
+    # but we also need offset in opposite by timezone because ticktick
+    # recalculate with dropping timezone (not that setted in date format. He
+    # determine it somehow else)
+    timezone_antioffset=$(( - $(date +%:::z) ))
+    echo $timezone_antioffset
+    date=$(date -u --date="$date 1 day ago 21 $timezone_antioffset hours" -Iseconds)
+    # date=$(date --date="$date 1 day ago 21-$timezone_offset" -Iseconds)
+        # # title_date=$(date --date="$title_date 1 day ago 17 " -Iseconds)
+        # title_date=$(date --date="$title_date 1 day ago $(date +%:::z) hours" -Iseconds)
+    field_duedate=', "dueDate": "'$date'"'
+
+    # remove date from title text
     task_title="$(echo "$task_title" | sed -E 's/(^| )\*today( |$)/ /g; s/(^| )\*tomorrow( |$)/ /g; s/(^ | $)//g')"
 fi
 # parse tags
