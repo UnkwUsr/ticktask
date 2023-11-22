@@ -16,7 +16,8 @@ Ticktask is a simple cli for [ticktick](https://ticktick.com) to create tasks.
 
 Just save the
 [./ticktask](https://raw.githubusercontent.com/UnkwUsr/ticktask/master/ticktask)
-file somewhere on your computer (for example, in `/usr/local/bin/`)
+file somewhere on your computer (for example, in `/usr/local/bin/`). Don't
+forget to set execute permission on file: `chmod +x /path/to/ticktask`
 
 ## Setup
 
