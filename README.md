@@ -77,7 +77,7 @@ script, so it's very hackable and extensible.
 
 For examples see [./config.example.sh](./config.example.sh)
 
-### Task body
+### Task body (not necessary)
 
 To be able to enter a task description, you can define function
 `cmd_get_description()` which should output the description as a result. For
