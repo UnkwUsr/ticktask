@@ -1,5 +1,5 @@
-CLIENT_ID="your_client_id"
-CLIENT_SECRET="your_client_secret"
+CLIENT_ID='your_client_id'
+CLIENT_SECRET='your_client_secret'
 
 # cmd_get_description() is optional, just remove it if you don't need.
 # Used to provide task description
