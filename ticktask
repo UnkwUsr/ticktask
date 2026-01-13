@@ -66,7 +66,8 @@ fi
 # getting task description
 if [ $(declare -F cmd_get_description) ]; then
     # escape \ and " and newline symbols
-    desc=$(cmd_get_description | sed 's/\\/\\\\/g; s/"/\\"/g' \
+    raw_desc="$(cmd_get_description)"
+    desc=$(echo -n "$raw_desc" | sed 's/\\/\\\\/g; s/"/\\"/g' \
         | awk '{printf "%s\\n", $0}')
     field_content=', "content": "'$desc'"'
 fi
@@ -110,7 +111,8 @@ if (( $? != 0 )); then
 
     mkdir -p $FOLDER_ERROR_TASKS
     error_task_file=$(date +%s)
-    echo "$@" > $FOLDER_ERROR_TASKS/$error_task_file
+    echo "$task_title" > $FOLDER_ERROR_TASKS/$error_task_file
+    echo -n "$raw_desc" >> $FOLDER_ERROR_TASKS/$error_task_file
     echo "Task saved to $FOLDER_ERROR_TASKS"
 
     exit 2
