@@ -1,6 +1,30 @@
 # Ticktask
 
-Ticktask is a simple cli for [ticktick](https://ticktick.com) to create tasks.
+Ticktask is a simple cli for [TickTick](https://ticktick.com) to create tasks.
+
+### Status
+
+I'm not using this script anymore, as I'm moved away from TickTick to local
+plain text markdown files. The script still works (if not - please open new
+issue) and considered as "complete".
+
+If one interested in my new setup:
+
+* task tracker + notes storage
+  * neovim with [zk plugin](https://github.com/zk-org/zk-nvim)
+* calendar
+  * [remind](https://dianne.skoll.ca/projects/remind/), +
+    [remind-done-tasks](https://github.com/UnkwUsr/remind-done-tasks) helper
+    script for repetitive tasks
+* adding inbox notes from phone
+  * [inbox-app](https://github.com/UnkwUsr/inbox-app) (Android)
+* syncing
+  * manually via git
+  * scripts for auto syncing inbox notes from phone:
+    * [gather-inbox](https://github.com/UnkwUsr/dotfiles/blob/master/bin/gather-inbox.sh)
+      (on pc)
+    * [sync_to_relay](https://github.com/UnkwUsr/dotfiles/blob/master/bin/termux/3sync_to_relay)
+      (on phone in termux)
 
 ## Features
 
@@ -8,7 +32,7 @@ Ticktask is a simple cli for [ticktick](https://ticktick.com) to create tasks.
   is still under development, but creating tasks is already work)
 * Support date (\*today and \*tomorrow)
 * Support tags (starts with #)
-* Support task body (see [config](#Config) section)
+* Support task body (see [config](#config) section)
 
 ## Installation
 
