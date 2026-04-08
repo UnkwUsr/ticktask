@@ -12,7 +12,8 @@ If one interested in my new setup:
 
 * task tracker + notes storage
   * neovim with [zk plugin](https://github.com/zk-org/zk-nvim)
-* calendar
+* calendar (for tracking tasks that are planned for specific days or just
+  scheduled)
   * [remind](https://dianne.skoll.ca/projects/remind/), +
     [remind-done-tasks](https://github.com/UnkwUsr/remind-done-tasks) helper
     script for repetitive tasks
